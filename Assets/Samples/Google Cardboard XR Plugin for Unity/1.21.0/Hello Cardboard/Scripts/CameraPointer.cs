@@ -34,6 +34,23 @@ public class CameraPointer : MonoBehaviour
     private readonly string interactableTag = "Interactable";
     private float gazePointerScaleSize = 0.025f;
 
+    private void Start()
+    {
+        GazeManager.Instance.OnGazeSelection += Instance_OnGazeSelection;
+    }
+
+    private void Instance_OnGazeSelection()
+    {
+        _gazedAtObject?.SendMessage("OnPointerClick", null, SendMessageOptions.DontRequireReceiver);
+
+        // Sumar puntos del PuntajeScript
+        PuntajeScript puntajeScript = gameObject.GetComponent<PuntajeScript>();
+        if(puntajeScript != null)
+        {
+            puntajeScript.SumarPuntaje(1);
+        }
+    }
+
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
